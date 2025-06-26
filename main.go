@@ -31,7 +31,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	// Start profiling
 	_, err := pyroscope.Start(pyroscope.Config{
-		ApplicationName: "go.app.nested",
+		ApplicationName: "go.app.example",
 		ServerAddress:   "http://pyroscope:4040",
 		Logger:          pyroscope.StandardLogger,
 
