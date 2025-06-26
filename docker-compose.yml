@@ -1,5 +1,5 @@
 
-version: '3.8'
+version: '3.9'
 
 services:
   pyroscope:
@@ -11,11 +11,23 @@ services:
       - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
       - GITHUB_SESSION_SECRET=${GITHUB_SESSION_SECRET}
 
-
   app:
     build: .
     ports:
       - "8080:8080"
     depends_on:
       - pyroscope
+
+  loadgen:
+    image: curlimages/curl:latest
+    depends_on:
+      - app
+    command: >
+      sh -c 'while true; do
+        for i in $(seq 1 100); do
+          curl -v http://app:8080;
+        done;
+        echo "Batch of 100 requests done";
+        sleep 1;
+      done'
 
