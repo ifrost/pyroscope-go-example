@@ -7,32 +7,36 @@ import (
 	"net/http"
 
 	"github.com/pyroscope-io/client/pyroscope"
+	_ "runtime/cgo" 
 )
 
-func busyWork() {
-	for i := 0; i < 10000000; i++ {
+func doHeavyCalculation() {
+	// Simulated heavy calculation
+	for i := 0; i < 10_000_000; i++ {
 		_ = rand.Float64() * rand.Float64()
 	}
 }
 
+func doWork() {
+	for i := 0; i < 5; i++ {
+		doHeavyCalculation()
+	}
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
-	busyWork()
-	fmt.Fprintf(w, "Hello from Go with Pyroscope!\n")
+	doWork()
+	fmt.Fprintf(w, "Nested profiling example with Pyroscope!\n")
 }
 
 func main() {
 	// Start profiling
 	_, err := pyroscope.Start(pyroscope.Config{
-		ApplicationName: "go.app.demo",
+		ApplicationName: "go.app.nested",
 		ServerAddress:   "http://pyroscope:4040",
 		Logger:          pyroscope.StandardLogger,
 
 		ProfileTypes: []pyroscope.ProfileType{
 			pyroscope.ProfileCPU,
-			pyroscope.ProfileAllocObjects,
-			pyroscope.ProfileAllocSpace,
-			pyroscope.ProfileInuseObjects,
-			pyroscope.ProfileInuseSpace,
 		},
 	})
 	if err != nil {
