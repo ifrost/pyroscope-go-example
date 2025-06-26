@@ -6,6 +6,11 @@ services:
     image: grafana/pyroscope:latest
     ports:
       - "4040:4040"
+    environment:
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - GITHUB_SESSION_SECRET=${GITHUB_SESSION_SECRET}
+
 
   app:
     build: .
