@@ -12,7 +12,7 @@ import (
 
 func doHeavyCalculation() {
 	// Simulated heavy calculation
-	for i := 0; i < 10_123_000; i++ {
+	for i := 0; i < 10_123_456; i++ {
 		_ = rand.Float64() * rand.Float64()
 	}
 }
